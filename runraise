@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -eq 0 ]]; then
+    echo "Usage: runraise <command> [wm_class] [title]" >&2
+    exit 1
+fi
+
+command="${1}"
+wm_class="${2:-}"
+title="${3:-}"
+
+gdbus call \
+    --session \
+    --dest org.gnome.Shell \
+    --object-path /org/gnome/Shell/Extensions/RunOrRaise \
+    --method org.gnome.Shell.Extensions.RunOrRaise.Call \
+    ",${command},${wm_class},${title}" \
+    > /dev/null
